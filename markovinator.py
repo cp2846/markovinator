@@ -26,9 +26,8 @@ import random
 
 class Markovinator:
     def __init__(self, input):
-        
         self.sentence = ""
-        self.input = self.process_input(input) 
+        self.input = self._process_input(input) 
         """ 
         Two Markov corpuses to be generated on instantiation:
         The regular pool and the starting pool.
@@ -38,9 +37,9 @@ class Markovinator:
         """
         self.pool = {}
         self.starting_pool = {}
-        self.generate_pools()
+        self._generate_pools()
 
-    def generate_pools(self):
+    def _generate_pools(self):
         # Return type: void
         for sentence in self.input:
             for j in xrange(2, len(sentence)):
@@ -55,14 +54,18 @@ class Markovinator:
                 else:
                     self.starting_pool[sentence[0]] = [sentence[1]]
             
-    def process_input(self, input):
+    def _process_input(self, input):
         # Input type: str
         # Return type: 2D list
         # Splits the input into sentences, then words.
-        sentence_list = re.split('([\n\.])', input)
+        sentence_list = re.split('([\n\.?])', input)
         sentence_list = [s for s in sentence_list if s is not '']
+        sentence_enders = [".", "!", "?", "\n"]
+        
+        """ Note: This is kind of a cruddy hack to add split delimiters back
+            onto the words they were originally attached to """
         for i, s in enumerate(sentence_list):
-            if s == "\n":
+            if s in sentence_enders:
                 sentence_list[i - 1] = sentence_list[i - 1] + s
         for i, sentence in enumerate(sentence_list):
             sentence_list[i] = sentence.split(" ")
@@ -70,33 +73,33 @@ class Markovinator:
                 sentence_list[i].remove('')
         return sentence_list
     
-    def get_starting_point(self):
+    def _get_starting_point(self):
         # Return type: Tuple
         start = random.choice(self.starting_pool.keys())
         starting_point = (start, self.starting_pool[start][random.randint(0, len(self.starting_pool[start]) - 1)])
         return starting_point
     
+    def _is_sentence_end(self, word):
+        # Input: str
+        # Return type: Bool
+        return word.endswith(".") or word.endswith("!") or word.endswith("?") or word.endswith("?")
+   
     def generate_sentence(self, start=None):
         # Return type: str
         if not start: 
             self.sentence = ""
-            start = self.get_starting_point()
+            start = self._get_starting_point()
             self.sentence += start[0] + " " + start[1]
         next_word = self.pool[start][random.randint(0, len(self.pool[start]) - 1)]
         self.sentence += " " + next_word
         try: 
             self.pool[(start[1], next_word)]
-            if not self.is_sentence_end(next_word):
+            if not self._is_sentence_end(next_word):
                 self.generate_sentence((start[1], next_word))
         except:
             pass
         return self.sentence + " "
-    
-    def is_sentence_end(self, word):
-        # Input: str
-        # Return type: Bool
-        return word.endswith(".") or word.endswith("!") or word.endswith("?") or word.endswith("?")
-    
+        
     def generate_paragraph(self, limit=5):
         # Input: int (optional)
         # Return type: str
@@ -105,4 +108,18 @@ class Markovinator:
             output += self.generate_sentence()
             limit -= 1
         return output
+        
+    def add_input(self, new_input):
+        # Input: str
+        # Return type: void
+        self.input = self._process_input(new_input)
+        self._generate_pools()
+        
+    def refresh_input(self, new_input=""):
+        # Input: str
+        # Return type: void
+        self.input = self._process_input(new_input)
+        self.pool = {}
+        self.starting_pool = {}
+        self._generate_pools()
 
