@@ -8,8 +8,7 @@ Add the markovinator.py file to the same directory your project is located in. T
     
 # How to use this project
 
-Generates text based on a Markov chain given sample input.
-To use, simply create an instance of the Markovinator class, 
+Simply create an instance of the Markovinator class, 
 passing the sample text as input. Then call on the object's 
 *generate_sentence()* method or *generate_paragraph()* method to 
 generate pseudo-random text based on that input.
