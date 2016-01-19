@@ -1,12 +1,12 @@
 # markovinator
-Markov chain text generator for Python.
+Markov chain text generation module for Python.
 
 # Adding this module to your project
 Add the markovinator.py file to the same directory your project is located in. Then import:
 
     from markovinator import Markovinator
     
-# How to use this project
+# How to use this module
 
 Simply create an instance of the Markovinator class, 
 passing the sample text as input. Then call on the object's 
