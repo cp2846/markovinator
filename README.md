@@ -1,5 +1,5 @@
 # markovinator
-Markov chain text generation module for Python.
+Markov chain string generation module for Python.
 
 # Adding this module to your project
 Add the markovinator.py file to the same directory your project is located in. Then import:
@@ -9,13 +9,12 @@ Add the markovinator.py file to the same directory your project is located in. T
 # How to use this module
 
 Simply create an instance of the Markovinator class, 
-passing the sample text as input. Then call on the object's 
+passing the sample string as input. Then call on the object's 
 *generate_sentence()* method or *generate_paragraph()* method to 
-generate pseudo-random text based on that input.
+generate a pseudo-random string based on that input.
 
 Example program:
 
-    from markovinator import Markovinator
     markov = Markovinator("The quick brown fox jumps over the lazy dog.")
     print markov.generate_sentence()
     
