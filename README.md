@@ -1,5 +1,5 @@
 # markovinator
-Markov chain string generation module for Python.
+Markov chain string generation module for Python. Works with Python 2.7 only.
 
 # Adding this module to your project
 Add the markovinator.py file to the same directory your project is located in. Then import:
